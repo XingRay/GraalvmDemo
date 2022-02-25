@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.xingray</groupId>
+    <artifactId>GraalvmDemo</artifactId>
+    <version>0.0.1</version>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <javafx.version>17.0.2</javafx.version>
+        <gluonfx.maven.plugin.version>1.0.10</gluonfx.maven.plugin.version>
+
+        <launcher.class>com.xingray.graalvm.Launcher</launcher.class>
+        <application.class>com.xingray.graalvm.FxApplication</application.class>
+
+        <android-keystore-path>/path-to-android-key-stroe</android-keystore-path>
+        <android-keystore-password>password</android-keystore-password>
+        <android-key-alias>key-alias</android-key-alias>
+        <android-key-password>key-password</android-key-password>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.0</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>${launcher.class}</mainClass>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.gluonhq</groupId>
+                <artifactId>gluonfx-maven-plugin</artifactId>
+                <version>1.0.12</version>
+                <configuration>
+                    <target>host</target>
+                    <mainClass>${application.class}</mainClass>
+                    <reflectionList>
+                        <list>com.xingray.graalvm.controller.MainController</list>
+                        <list>com.xingray.graalvm.domain.User</list>
+                    </reflectionList>
+
+                    <releaseConfiguration>
+                        <!-- all targets -->
+                        <packageType></packageType>
+                        <description>demo for graalvm and javafx</description>
+                        <vendor>XingRay</vendor>
+                        <version>1.0.5</version>
+
+                        <!-- macOS -->
+                        <macAppStore></macAppStore>
+                        <macSigningUserName></macSigningUserName>
+                        <macAppCategory></macAppCategory>
+
+                        <!-- macOS/iOS -->
+                        <bundleName></bundleName>
+                        <bundleVersion>1.0</bundleVersion>
+                        <bundleShortVersion>1.0</bundleShortVersion>
+                        <providedSigningIdentity></providedSigningIdentity>
+                        <providedProvisioningProfile></providedProvisioningProfile>
+                        <skipSigning>false</skipSigning>
+
+                        <!-- iOS Simulator -->
+                        <simulatorDevice></simulatorDevice>
+
+
+                        <!-- Android -->
+                        <appLabel></appLabel>
+                        <versionCode>1</versionCode>
+                        <versionName>1.0</versionName>
+                        <providedKeyStorePath>${android-keystore-path}</providedKeyStorePath>
+                        <providedKeyStorePassword>${android-keystore-password}</providedKeyStorePassword>
+                        <providedKeyAlias>${android-key-alias}</providedKeyAlias>
+                        <providedKeyAliasPassword>${android-key-password}</providedKeyAliasPassword>
+                    </releaseConfiguration>
+
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>ios</id>
+            <properties>
+                <gluonfx.target>ios</gluonfx.target>
+            </properties>
+        </profile>
+        <profile>
+            <id>android</id>
+            <properties>
+                <gluonfx.target>android</gluonfx.target>
+            </properties>
+        </profile>
+    </profiles>
+
+</project>
